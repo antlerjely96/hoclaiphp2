@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Http\Requests\StoreCustomerRequest;
-use App\Http\Requests\UpdateCustomerRequest;
+//use App\Http\Requests\StoreCustomerRequest;
+//use App\Http\Requests\UpdateCustomerRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class CustomerController extends Controller
 {
@@ -27,18 +29,13 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCustomerRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreCustomerRequest $request)
+    public function store(Request $request)
     {
-        //
+        Customer::create($request->all());
+        return redirect()->route('customers.index');
     }
 
     /**
@@ -60,19 +57,21 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        //
+        return view('edit',compact('customer'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCustomerRequest  $request
+     *
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCustomerRequest $request, Customer $customer)
+    public function update(Request $request, Customer $customer)
     {
-        //
+        $customer->update($request->all());
+
+        return Redirect::route('customers.index');
     }
 
     /**
@@ -83,6 +82,8 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+
+        return Redirect::route('customers.index');
     }
 }
